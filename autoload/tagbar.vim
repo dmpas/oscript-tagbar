@@ -2,9 +2,10 @@
 " File:        tagbar.vim
 " Description: List the current file's tags in a sidebar, ordered by class etc
 " Author:      Jan Larres <jan@majutsushi.net>
+"              OneScript addition: Sergey Batanov <sergey.batanov@dmpas.ru>
 " Licence:     Vim licence
-" Website:     http://majutsushi.github.com/tagbar/
-" Version:     2.6.1
+" Website:     http://github.com/dmpas/oscrip-tagbar/
+" Version:     2.6.1-os0.1
 " Note:        This plugin was heavily inspired by the 'Taglist' plugin by
 "              Yegappan Lakshmanan and uses a small amount of code from it.
 "
@@ -818,6 +819,15 @@ function! s:InitTypes() abort
         \ {'short' : 'l', 'long' : 'labels', 'fold' : 0, 'stl' : 1}
     \ ]
     let s:known_types.yacc = type_yacc
+    " }}}3
+
+    " OneScript {{{3
+    let type_onescript = s:TypeInfo.New()
+    let type_onescript.ctagstype = 'onescript'
+    let type_onescript.kinds = [
+        \ {'short' : 'f', 'long' : 'functions',    'fold' : 0, 'stl' : 1}
+        \ ]
+    let s:known_types.onescript = type_onescript
     " }}}3
 
     for [type, typeinfo] in items(s:known_types)
@@ -2255,6 +2265,7 @@ function! s:ParseTagline(part1, part2, typeinfo, fileinfo) abort
     " the rest of the items together again
     let pattern = join(basic_info[2:], "\t")
     let start   = 2 " skip the slash and the ^
+
     let end     = strlen(pattern) - 1
     if pattern[end - 1] ==# '$'
         let end -= 1
